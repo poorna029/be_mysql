@@ -1,8 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
-const fs = require("fs");
-const csv = require("csv-parser");
 
 const app = express();
 
@@ -64,25 +62,6 @@ app.get("/search", (req, res) => {
     res.json(results);
   });
 });
-
-const data = [];
-
-// Path to your CSV file
-const csvFilePath = "data.csv";
-
-// Read the CSV file and parse its contents
-fs.createReadStream("./Sample-Data-Historic.csv")
-  .pipe(csv())
-  .on("data", (row) => {
-    // Process each row of CSV data
-    const a = Object.values(row);
-    data.push({ ...row, ticker: a[0] });
-  })
-  .on("end", () => {
-    // All rows have been processed
-    // create_rows(data);
-    console.log("qry insertion started at :", new Date().toLocaleTimeString());
-  });
 
 // Start the Express server
 const PORT = process.env.PORT || 3000;
